@@ -6,6 +6,8 @@ from ckanext.googleanalytics import config
 def get_helpers():
     return {
         "googleanalytics_header": googleanalytics_header,
+        "googleanalytics_id": googleanalytics_id,
+        "googleanalytics_opendata_measurement_id": googleanalytics_opendata_measurement_id,
         "googleanalytics_resource_prefix": googleanalytics_resource_prefix,
         "googleanalytics_tracking_mode": googleanalytics_tracking_mode,
     }
@@ -32,6 +34,7 @@ def googleanalytics_header():
 
     data = {
         "googleanalytics_id": config.tracking_id(),
+        "googleanalytics_opendata_measurement_id": config.opendata_measurement_id(),
         "googleanalytics_domain": config.domain(),
         "googleanalytics_fields": str(fields),
         "googleanalytics_linked_domains": config.linked_domains(),
@@ -43,3 +46,11 @@ def googleanalytics_header():
 
 def googleanalytics_tracking_mode():
     return config.tracking_mode()
+
+
+def googleanalytics_id():
+    return config.tracking_id()
+
+
+def googleanalytics_opendata_measurement_id():
+    return config.opendata_measurement_id()

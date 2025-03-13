@@ -1,16 +1,39 @@
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={{googleanalytics_id}}"></script>
-<script>
- window.dataLayer = window.dataLayer || [];
- function gtag(){dataLayer.push(arguments);}
+{% block main %}
+    <!-- Google tag (gtag.js) -->
+    {% if googleanalytics_id and googleanalytics_id != 'ODC_GOOGLE_ANALYTICS_ID' %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{googleanalytics_id}}"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
 
- gtag('set', 'linker', );
- gtag('js', new Date());
+        {% block setup %}
+            gtag('set', 'linker');
 
- gtag('config', '{{googleanalytics_id}}', {
-     anonymize_ip: true,
-     linker: {
-         domains: {{ googleanalytics_linked_domains }}
-     }
- });
-</script>
+            gtag('js', new Date());
+
+            gtag('config', '{{googleanalytics_id}}', {
+                anonymize_ip: true,
+                linker: {
+                    domains: {{ googleanalytics_linked_domains|tojson }}
+                }
+            });
+        {% endblock setup %}
+
+        {% block extra %}
+        {% endblock extra %}
+
+        </script>
+    {% endif %}
+
+    {% with measurement_id = h.googleanalytics_opendata_measurement_id() %}
+    {% if measurement_id %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ measurement_id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ measurement_id }}');
+        </script>
+    {% endif %}
+    {% endwith %}
+{% endblock %}
